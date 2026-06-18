@@ -4,6 +4,7 @@ import PeriodSwitcher from "@/components/PeriodSwitcher"
 import StatCards from "@/components/StatCards"
 import TopRanking from "@/components/TopRanking"
 import FruitDetail from "@/components/FruitDetail"
+import TrendChart from "@/components/TrendChart"
 import { Store, Info, Loader2, Database, FileText } from "lucide-react"
 
 export default function Dashboard() {
@@ -56,6 +57,8 @@ export default function Dashboard() {
         </div>
 
         <StatCards />
+
+        <TrendChart />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <TopRanking />

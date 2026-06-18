@@ -19,6 +19,11 @@ export interface FruitStat {
   percentage: number
 }
 
+export interface MoMData {
+  salesMoM: number | null
+  ordersMoM: number | null
+}
+
 export interface PeriodStats {
   totalSales: number
   totalOrders: number
@@ -26,6 +31,12 @@ export interface PeriodStats {
   fruitStats: FruitStat[]
   topProducts: FruitStat[]
   periodLabel: string
+}
+
+export interface DayTrend {
+  date: string
+  totalSales: number
+  totalOrders: number
 }
 
 export type PeriodType = "day" | "week"

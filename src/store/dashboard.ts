@@ -1,6 +1,6 @@
 import { create } from "zustand"
-import type { PeriodType, PeriodStats } from "@/types"
-import { fetchDayStats, fetchWeekStats, fetchAvailableDates } from "@/api"
+import type { PeriodType, PeriodStats, MoMData, DayTrend } from "@/types"
+import { fetchDayStats, fetchWeekStats, fetchAvailableDates, fetchTrendWeek } from "@/api"
 
 function getTodayStr(): string {
   const d = new Date()
@@ -31,11 +31,20 @@ function getEmptyStats(periodLabel: string): PeriodStats {
   }
 }
 
+function getEmptyMoM(): MoMData {
+  return {
+    salesMoM: null,
+    ordersMoM: null,
+  }
+}
+
 interface DashboardState {
   periodType: PeriodType
   selectedDate: string
   weekStartDate: string
   stats: PeriodStats
+  mom: MoMData
+  trend: DayTrend[]
   availableDates: string[]
   loading: boolean
   usingMock: boolean
@@ -53,6 +62,8 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   selectedDate: today,
   weekStartDate: weekDates[6],
   stats: getEmptyStats(""),
+  mom: getEmptyMoM(),
+  trend: [],
   availableDates: weekDates,
   loading: true,
   usingMock: false,
@@ -71,11 +82,26 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   refreshData: async () => {
     const { periodType, selectedDate, weekStartDate } = get()
     let stats: PeriodStats | null = null
+    let mom: MoMData | null = null
+    let trend: DayTrend[] | null = null
 
     if (periodType === "day") {
-      stats = await fetchDayStats(selectedDate)
+      const result = await fetchDayStats(selectedDate)
+      if (result) {
+        stats = result.stats
+        mom = result.mom
+      }
+      const trendStart = new Date(selectedDate)
+      trendStart.setDate(trendStart.getDate() - 6)
+      const tsStr = `${trendStart.getFullYear()}-${String(trendStart.getMonth() + 1).padStart(2, "0")}-${String(trendStart.getDate()).padStart(2, "0")}`
+      trend = await fetchTrendWeek(tsStr)
     } else {
-      stats = await fetchWeekStats(weekStartDate)
+      const result = await fetchWeekStats(weekStartDate)
+      if (result) {
+        stats = result.stats
+        mom = result.mom
+      }
+      trend = await fetchTrendWeek(weekStartDate)
     }
 
     const remoteDates = await fetchAvailableDates()
@@ -83,6 +109,8 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     if (stats) {
       set({
         stats,
+        mom: mom || getEmptyMoM(),
+        trend: trend || [],
         availableDates: remoteDates || get().availableDates,
         loading: false,
         usingMock: false,
@@ -90,6 +118,8 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     } else {
       set({
         stats: getEmptyStats(periodType === "day" ? selectedDate : weekStartDate),
+        mom: getEmptyMoM(),
+        trend: trend || [],
         availableDates: remoteDates || weekDates,
         loading: false,
         usingMock: true,

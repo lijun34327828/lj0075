@@ -35,7 +35,7 @@ const ORDERS_BY_DATE = {
       id: "ORD-2026-06-10-0003",
       date: "2026-06-10",
       items: [
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 12.8 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 12.8, subtotal: 12.8 },
       ],
     },
     {
@@ -76,7 +76,7 @@ const ORDERS_BY_DATE = {
       items: [
         { fruitName: "香蕉", quantity: 3, unitPrice: 4.5, subtotal: 13.5 },
         { fruitName: "葡萄", quantity: 1, unitPrice: 12.5, subtotal: 12.5 },
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 16.0 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 16.0, subtotal: 16.0 },
       ],
     },
   ],
@@ -108,7 +108,7 @@ const ORDERS_BY_DATE = {
       id: "ORD-2026-06-11-0004",
       date: "2026-06-11",
       items: [
-        { fruitName: "西瓜", quantity: 2, unitPrice: 3.2, subtotal: 28.8 },
+        { fruitName: "西瓜", quantity: 2, unitPrice: 14.4, subtotal: 28.8 },
         { fruitName: "桃子", quantity: 2, unitPrice: 8.5, subtotal: 17.0 },
       ],
     },
@@ -157,7 +157,7 @@ const ORDERS_BY_DATE = {
       id: "ORD-2026-06-12-0003",
       date: "2026-06-12",
       items: [
-        { fruitName: "西瓜", quantity: 3, unitPrice: 3.2, subtotal: 33.6 },
+        { fruitName: "西瓜", quantity: 3, unitPrice: 11.2, subtotal: 33.6 },
         { fruitName: "葡萄", quantity: 2, unitPrice: 12.5, subtotal: 25.0 },
       ],
     },
@@ -215,7 +215,7 @@ const ORDERS_BY_DATE = {
       id: "ORD-2026-06-13-0004",
       date: "2026-06-13",
       items: [
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 14.4 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 14.4, subtotal: 14.4 },
       ],
     },
     {
@@ -279,7 +279,7 @@ const ORDERS_BY_DATE = {
       id: "ORD-2026-06-14-0004",
       date: "2026-06-14",
       items: [
-        { fruitName: "西瓜", quantity: 2, unitPrice: 3.2, subtotal: 22.4 },
+        { fruitName: "西瓜", quantity: 2, unitPrice: 11.2, subtotal: 22.4 },
         { fruitName: "桃子", quantity: 3, unitPrice: 8.5, subtotal: 25.5 },
       ],
     },
@@ -322,7 +322,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-15",
       items: [
         { fruitName: "葡萄", quantity: 4, unitPrice: 12.5, subtotal: 50.0 },
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 12.8 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 12.8, subtotal: 12.8 },
       ],
     },
     {
@@ -387,7 +387,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-16",
       items: [
         { fruitName: "葡萄", quantity: 2, unitPrice: 12.5, subtotal: 25.0 },
-        { fruitName: "西瓜", quantity: 3, unitPrice: 3.2, subtotal: 33.6 },
+        { fruitName: "西瓜", quantity: 3, unitPrice: 11.2, subtotal: 33.6 },
       ],
     },
     {
@@ -444,7 +444,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-17",
       items: [
         { fruitName: "葡萄", quantity: 3, unitPrice: 12.5, subtotal: 37.5 },
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 16.0 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 16.0, subtotal: 16.0 },
       ],
     },
     {
@@ -516,7 +516,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-18",
       items: [
         { fruitName: "葡萄", quantity: 4, unitPrice: 12.5, subtotal: 50.0 },
-        { fruitName: "西瓜", quantity: 2, unitPrice: 3.2, subtotal: 25.6 },
+        { fruitName: "西瓜", quantity: 2, unitPrice: 12.8, subtotal: 25.6 },
       ],
     },
     {
@@ -563,7 +563,7 @@ const ORDERS_BY_DATE = {
       id: "ORD-2026-06-18-0009",
       date: "2026-06-18",
       items: [
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 14.4 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 14.4, subtotal: 14.4 },
         { fruitName: "桃子", quantity: 2, unitPrice: 8.5, subtotal: 17.0 },
       ],
     },
@@ -604,7 +604,7 @@ const ORDERS_BY_DATE = {
       id: "ORD-2026-06-19-0004",
       date: "2026-06-19",
       items: [
-        { fruitName: "西瓜", quantity: 2, unitPrice: 3.2, subtotal: 24.0 },
+        { fruitName: "西瓜", quantity: 2, unitPrice: 12.0, subtotal: 24.0 },
         { fruitName: "桃子", quantity: 1, unitPrice: 8.5, subtotal: 8.5 },
       ],
     },
@@ -654,7 +654,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-20",
       items: [
         { fruitName: "葡萄", quantity: 2, unitPrice: 12.5, subtotal: 25.0 },
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 12.8 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 12.8, subtotal: 12.8 },
       ],
     },
     {
@@ -727,7 +727,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-21",
       items: [
         { fruitName: "葡萄", quantity: 5, unitPrice: 12.5, subtotal: 62.5 },
-        { fruitName: "西瓜", quantity: 2, unitPrice: 3.2, subtotal: 25.6 },
+        { fruitName: "西瓜", quantity: 2, unitPrice: 12.8, subtotal: 25.6 },
       ],
     },
     {
@@ -792,7 +792,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-22",
       items: [
         { fruitName: "葡萄", quantity: 2, unitPrice: 12.5, subtotal: 25.0 },
-        { fruitName: "西瓜", quantity: 3, unitPrice: 3.2, subtotal: 33.6 },
+        { fruitName: "西瓜", quantity: 3, unitPrice: 11.2, subtotal: 33.6 },
       ],
     },
     {
@@ -849,7 +849,7 @@ const ORDERS_BY_DATE = {
       date: "2026-06-23",
       items: [
         { fruitName: "葡萄", quantity: 3, unitPrice: 12.5, subtotal: 37.5 },
-        { fruitName: "西瓜", quantity: 1, unitPrice: 3.2, subtotal: 14.4 },
+        { fruitName: "西瓜", quantity: 1, unitPrice: 14.4, subtotal: 14.4 },
       ],
     },
     {
@@ -913,6 +913,31 @@ export function getWeekOrders(startDate) {
     orders.push(...(ORDERS_BY_DATE[dateStr] || []))
   }
   return orders
+}
+
+export function computeDayAggregate(dateStr) {
+  const orders = ORDERS_BY_DATE[dateStr] || []
+  const totalSales = orders.reduce(
+    (sum, order) => sum + order.items.reduce((s, item) => s + item.subtotal, 0),
+    0
+  )
+  return {
+    date: dateStr,
+    totalSales: Math.round(totalSales * 100) / 100,
+    totalOrders: orders.length,
+  }
+}
+
+export function computeWeekAggregates(startDate) {
+  const result = []
+  const start = new Date(startDate)
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start)
+    d.setDate(d.getDate() + i)
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+    result.push(computeDayAggregate(dateStr))
+  }
+  return result
 }
 
 export { FRUIT_EMOJIS }

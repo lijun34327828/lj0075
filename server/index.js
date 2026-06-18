@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import { getAvailableDates, getDayOrders, getWeekOrders, FRUIT_EMOJIS } from "./data/orders.js"
+import { getAvailableDates, getDayOrders, getWeekOrders, FRUIT_EMOJIS, computeDayAggregate, computeWeekAggregates } from "./data/orders.js"
 
 const app = express()
 const PORT = 8846
@@ -63,6 +63,17 @@ function formatWeekLabel(startDate) {
   return `${startStr} - ${endStr}`
 }
 
+function calcMoM(current, previous) {
+  if (previous === 0) return null
+  return Math.round(((current - previous) / previous) * 1000) / 10
+}
+
+function shiftDate(dateStr, days) {
+  const d = new Date(dateStr)
+  d.setDate(d.getDate() + days)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+}
+
 app.get("/api/dates", (req, res) => {
   const dates = getAvailableDates()
   res.json({ dates })
@@ -79,10 +90,21 @@ app.get("/api/orders/day", (req, res) => {
   const periodLabel = formatDateCN(date)
   const stats = computeStats(orders, periodLabel)
 
+  const prevDate = shiftDate(date, -1)
+  const prevAggregate = computeDayAggregate(prevDate)
+  const curAggregate = computeDayAggregate(date)
+
+  const salesMoM = calcMoM(curAggregate.totalSales, prevAggregate.totalSales)
+  const ordersMoM = calcMoM(curAggregate.totalOrders, prevAggregate.totalOrders)
+
   res.json({
     date,
     orders,
     stats,
+    mom: {
+      salesMoM,
+      ordersMoM,
+    },
   })
 })
 
@@ -101,11 +123,42 @@ app.get("/api/orders/week", (req, res) => {
   end.setDate(end.getDate() + 6)
   const endDate = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, "0")}-${String(end.getDate()).padStart(2, "0")}`
 
+  const curAggregates = computeWeekAggregates(startDate)
+  const prevStartDate = shiftDate(startDate, -7)
+  const prevAggregates = computeWeekAggregates(prevStartDate)
+
+  const curTotalSales = curAggregates.reduce((s, d) => s + d.totalSales, 0)
+  const curTotalOrders = curAggregates.reduce((s, d) => s + d.totalOrders, 0)
+  const prevTotalSales = prevAggregates.reduce((s, d) => s + d.totalSales, 0)
+  const prevTotalOrders = prevAggregates.reduce((s, d) => s + d.totalOrders, 0)
+
+  const salesMoM = calcMoM(curTotalSales, prevTotalSales)
+  const ordersMoM = calcMoM(curTotalOrders, prevTotalOrders)
+
   res.json({
     startDate,
     endDate,
     orders,
     stats,
+    mom: {
+      salesMoM,
+      ordersMoM,
+    },
+  })
+})
+
+app.get("/api/trend/week", (req, res) => {
+  const startDate = req.query.startDate
+  if (!startDate) {
+    res.status(400).json({ error: "缺少 startDate 参数" })
+    return
+  }
+
+  const trend = computeWeekAggregates(startDate)
+
+  res.json({
+    startDate,
+    trend,
   })
 })
 
