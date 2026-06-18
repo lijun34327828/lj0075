@@ -1,8 +1,6 @@
 import { create } from "zustand"
-import type { PeriodType, PeriodStats, Order } from "@/types"
-import { computeStats } from "@/utils/stats"
-import { MOCK_DATA } from "@/data/mockData"
-import { fetchDayOrders, fetchWeekOrders, fetchAvailableDates } from "@/api"
+import type { PeriodType, PeriodStats } from "@/types"
+import { fetchDayStats, fetchWeekStats, fetchAvailableDates } from "@/api"
 
 function getTodayStr(): string {
   const d = new Date()
@@ -22,37 +20,15 @@ function getWeekDates(): string[] {
   return dates
 }
 
-function formatDateCN(dateStr: string): string {
-  const [y, m, d] = dateStr.split("-")
-  return `${y}年${parseInt(m)}月${parseInt(d)}日`
-}
-
-function getMockOrders(periodType: PeriodType, selectedDate: string, weekStartDate: string): Order[] {
-  if (periodType === "day") {
-    return MOCK_DATA[selectedDate] || []
+function getEmptyStats(periodLabel: string): PeriodStats {
+  return {
+    totalSales: 0,
+    totalOrders: 0,
+    avgOrderValue: 0,
+    fruitStats: [],
+    topProducts: [],
+    periodLabel,
   }
-  const ws = new Date(weekStartDate)
-  const dates: string[] = []
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(ws)
-    d.setDate(d.getDate() + i)
-    dates.push(
-      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
-    )
-  }
-  return dates.flatMap((dt) => MOCK_DATA[dt] || [])
-}
-
-function computePeriodLabel(periodType: PeriodType, selectedDate: string, weekStartDate: string): string {
-  if (periodType === "day") {
-    return formatDateCN(selectedDate)
-  }
-  const ws = new Date(weekStartDate)
-  const endDate = new Date(ws)
-  endDate.setDate(endDate.getDate() + 6)
-  const endStr = `${endDate.getFullYear()}/${endDate.getMonth() + 1}/${endDate.getDate()}`
-  const startStr = `${ws.getFullYear()}/${ws.getMonth() + 1}/${ws.getDate()}`
-  return `${startStr} - ${endStr}`
 }
 
 interface DashboardState {
@@ -72,16 +48,14 @@ interface DashboardState {
 const today = getTodayStr()
 const weekDates = getWeekDates()
 
-const initialOrders = getMockOrders("day", today, weekDates[6])
-
 export const useDashboardStore = create<DashboardState>((set, get) => ({
   periodType: "day",
   selectedDate: today,
   weekStartDate: weekDates[6],
-  stats: computeStats(initialOrders, formatDateCN(today)),
+  stats: getEmptyStats(""),
   availableDates: weekDates,
-  loading: false,
-  usingMock: true,
+  loading: true,
+  usingMock: false,
   setPeriodType: (type) => {
     set({ periodType: type, loading: true })
     get().refreshData()
@@ -96,28 +70,30 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   },
   refreshData: async () => {
     const { periodType, selectedDate, weekStartDate } = get()
-    let orders: Order[] | null = null
-    let usingMock = false
+    let stats: PeriodStats | null = null
 
     if (periodType === "day") {
-      orders = await fetchDayOrders(selectedDate)
+      stats = await fetchDayStats(selectedDate)
     } else {
-      orders = await fetchWeekOrders(weekStartDate)
-    }
-
-    if (!orders) {
-      orders = getMockOrders(periodType, selectedDate, weekStartDate)
-      usingMock = true
+      stats = await fetchWeekStats(weekStartDate)
     }
 
     const remoteDates = await fetchAvailableDates()
-    const periodLabel = computePeriodLabel(periodType, selectedDate, weekStartDate)
 
-    set({
-      stats: computeStats(orders, periodLabel),
-      availableDates: remoteDates || weekDates,
-      loading: false,
-      usingMock,
-    })
+    if (stats) {
+      set({
+        stats,
+        availableDates: remoteDates || get().availableDates,
+        loading: false,
+        usingMock: false,
+      })
+    } else {
+      set({
+        stats: getEmptyStats(periodType === "day" ? selectedDate : weekStartDate),
+        availableDates: remoteDates || weekDates,
+        loading: false,
+        usingMock: true,
+      })
+    }
   },
 }))

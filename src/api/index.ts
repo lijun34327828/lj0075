@@ -1,16 +1,18 @@
-import type { Order } from "@/types"
+import type { Order, PeriodStats } from "@/types"
 
 const API_BASE = "/api"
 
 export interface DayOrdersResponse {
   date: string
   orders: Order[]
+  stats: PeriodStats
 }
 
 export interface WeekOrdersResponse {
   startDate: string
   endDate: string
   orders: Order[]
+  stats: PeriodStats
 }
 
 export interface AvailableDatesResponse {
@@ -30,14 +32,14 @@ async function fetchJSON<T>(url: string): Promise<T | null> {
   }
 }
 
-export async function fetchDayOrders(date: string): Promise<Order[] | null> {
+export async function fetchDayStats(date: string): Promise<PeriodStats | null> {
   const data = await fetchJSON<DayOrdersResponse>(`${API_BASE}/orders/day?date=${date}`)
-  return data?.orders ?? null
+  return data?.stats ?? null
 }
 
-export async function fetchWeekOrders(startDate: string): Promise<Order[] | null> {
+export async function fetchWeekStats(startDate: string): Promise<PeriodStats | null> {
   const data = await fetchJSON<WeekOrdersResponse>(`${API_BASE}/orders/week?startDate=${startDate}`)
-  return data?.orders ?? null
+  return data?.stats ?? null
 }
 
 export async function fetchAvailableDates(): Promise<string[] | null> {

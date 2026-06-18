@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useDashboardStore } from "@/store/dashboard"
 import PeriodSwitcher from "@/components/PeriodSwitcher"
 import StatCards from "@/components/StatCards"
@@ -6,7 +7,11 @@ import FruitDetail from "@/components/FruitDetail"
 import { Store, Info, Loader2, Database, FileText } from "lucide-react"
 
 export default function Dashboard() {
-  const { stats, loading, usingMock } = useDashboardStore()
+  const { stats, loading, usingMock, refreshData } = useDashboardStore()
+
+  useEffect(() => {
+    refreshData()
+  }, [refreshData])
 
   return (
     <div className="min-h-screen bg-fruit-cream">
